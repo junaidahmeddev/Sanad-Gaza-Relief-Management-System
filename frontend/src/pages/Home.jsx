@@ -554,7 +554,7 @@ export default function Home() {
             
             <div className="flex items-center gap-4">
               <div className="w-16 h-16 bg-gradient-to-br from-cyan-400 to-cyan-600 rounded-full flex items-center justify-center">
-                <span className="text-white font-bold text-xl">SR</span>
+                <span className="text-white font-bold text-xl">JA</span>
               </div>
               <div>
                 <div className="font-bold text-gray-900 text-lg">Junaid Ahmed</div>

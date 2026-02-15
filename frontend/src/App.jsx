@@ -6,7 +6,7 @@ import PaymentPage from './pages/PaymentPage';
 import SuccessPage from './pages/SuccessPage';
 import MemoryLine from './pages/MemoryLine';
 import MemoryDetail from './pages/MemoryDetail';
-import Topbar from './components/topbar';
+import Topbar from './components/Topbar';
 import MartyrsPage from "./pages/MartyrsPage";
 import SurvivorsPage from "./pages/SurvivorsPage";
 import OccupationTimelinePage from "./pages/OccupationTimelinePage";

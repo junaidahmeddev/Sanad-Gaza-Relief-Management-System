@@ -557,7 +557,7 @@ export default function Home() {
                 <span className="text-white font-bold text-xl">SR</span>
               </div>
               <div>
-                <div className="font-bold text-gray-900 text-lg">Shahwaiz Muhammad Rafiq</div>
+                <div className="font-bold text-gray-900 text-lg">Junaid Ahmed</div>
                 <div className="text-gray-600">The Founder</div>
               </div>
             </div>

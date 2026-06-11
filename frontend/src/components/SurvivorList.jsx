@@ -1,0 +1,82 @@
+import React, { useState } from "react";
+
+const SurvivorList = () => {
+  const [stories, setStories] = useState([
+    { name: "Amina Hassan", date: "2023-10-15", story: "Survived bombing in Gaza and now leads a youth support group." },
+    { name: "Sami Odeh", date: "2022-04-02", story: "Lost his home but now volunteers at local shelters." },
+  ]);
+
+  const [showModal, setShowModal] = useState(false);
+  const [newStory, setNewStory] = useState({ name: "", date: "", story: "" });
+
+  const handleAdd = () => {
+    setStories([...stories, newStory]);
+    setNewStory({ name: "", date: "", story: "" });
+    setShowModal(false);
+  };
+
+  return (
+    <div>
+      <h2 className="text-3xl font-bold mb-4 text-center text-blue-600">Survivors of Gaza</h2>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {stories.map((story, index) => (
+          <div key={index} className="bg-white shadow-md rounded-xl p-4 border-l-4 border-blue-600">
+            <h3 className="text-xl font-semibold">{story.name}</h3>
+            <p className="text-sm text-gray-500">{story.date}</p>
+            <p className="mt-2">{story.story}</p>
+          </div>
+        ))}
+      </div>
+
+      <div className="flex justify-center mt-6">
+        <button
+          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg"
+          onClick={() => setShowModal(true)}
+        >
+          Add Survivor Story
+        </button>
+      </div>
+
+      {showModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
+            <h3 className="text-xl font-semibold mb-4">New Survivor Story</h3>
+            <input
+              type="text"
+              placeholder="Name"
+              value={newStory.name}
+              onChange={(e) => setNewStory({ ...newStory, name: e.target.value })}
+              className="w-full mb-3 p-2 border rounded"
+            />
+            <input
+              type="date"
+              value={newStory.date}
+              onChange={(e) => setNewStory({ ...newStory, date: e.target.value })}
+              className="w-full mb-3 p-2 border rounded"
+            />
+            <textarea
+              placeholder="Story"
+              value={newStory.story}
+              onChange={(e) => setNewStory({ ...newStory, story: e.target.value })}
+              className="w-full mb-3 p-2 border rounded h-24"
+            />
+            <div className="flex justify-end space-x-2">
+              <button onClick={() => setShowModal(false)} className="text-gray-600">
+                Cancel
+              </button>
+              <button
+                onClick={handleAdd}
+                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+              >
+                Submit
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default SurvivorList;

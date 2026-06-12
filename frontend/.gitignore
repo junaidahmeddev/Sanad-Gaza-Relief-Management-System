@@ -1,3 +1,7 @@
+# Secret Files
+.env
+*.env.local
+
 # Logs
 logs
 *.log

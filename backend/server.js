@@ -16,9 +16,18 @@ app.use(express.json());
 
 // MongoDB Connection
 const mongoUri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/sanad_db';
+const localBackupUri = 'mongodb://127.0.0.1:27017/sanad_db';
+
 mongoose.connect(mongoUri)
   .then(() => console.log('Connected to MongoDB Successfully'))
-  .catch(err => console.error('MongoDB connection error:', err));
+  .catch(err => {
+    console.error('MongoDB connection error on primary URI, trying local fallback:', err.message);
+    if (mongoUri !== localBackupUri) {
+      mongoose.connect(localBackupUri)
+        .then(() => console.log('Connected to local MongoDB successfully as fallback'))
+        .catch(localErr => console.error('Local MongoDB fallback connection also failed:', localErr.message));
+    }
+  });
 
 // Test Route
 app.get('/', (req, res) => {

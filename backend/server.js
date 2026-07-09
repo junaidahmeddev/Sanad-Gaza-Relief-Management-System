@@ -37,7 +37,6 @@ app.post('/api/donate', async (req, res) => {
   }
 });
 
-app.use('/api/stripe', require('./routes/stripe'));
 app.use('/api/stories', require('./routes/storyRoutes'));
 app.use('/api/admin', require('./routes/admin'));
 app.use('/api/memories', require('./routes/memoryRoutes'));

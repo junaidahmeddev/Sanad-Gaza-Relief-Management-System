@@ -4,10 +4,21 @@ import { Heart, Play, Users, Target, Globe, ArrowRight, Plus, Minus, Star, Shiel
 export default function Home() {
   const [mapImageUrl, setMapImageUrl] = useState('');
   const [openFaq, setOpenFaq] = useState(0);
- const [isHovered, setIsHovered] = useState(false);
-   const [progress, setProgress] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+  const [progress, setProgress] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
   const [donorCount, setDonorCount] = useState(2340);
+  
+  // Interactive Hero Donation Card State
+  const [selectedHeroAmount, setSelectedHeroAmount] = useState(20);
+  const [customHeroAmount, setCustomHeroAmount] = useState('');
+
+  // Featured Campaigns State
+  const [activeCampaignTab, setActiveCampaignTab] = useState('relief');
+
+  // Modals state
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
+  const [isTestimonialModalOpen, setIsTestimonialModalOpen] = useState(false);
 
   useEffect(() => {
     setIsVisible(true);
@@ -21,19 +32,36 @@ export default function Home() {
       clearInterval(countTimer);
     };
   }, []);
-   
 
   const handleDonate = () => {
     window.location.href = '/donate';
+  };
+
+  const handleHeroDonateSubmit = (e) => {
+    e.preventDefault();
+    const finalAmount = customHeroAmount ? parseFloat(customHeroAmount) : selectedHeroAmount;
+    if (!finalAmount || finalAmount <= 0) {
+      alert("Please select or enter a valid donation amount.");
+      return;
+    }
+    sessionStorage.setItem('amount', finalAmount.toString());
+    sessionStorage.setItem('donorName', 'Guest Supporter');
+    window.location.href = '/donate/payment';
+  };
+
+  const handleCampaignDonate = (amount, campaignName) => {
+    sessionStorage.setItem('amount', amount.toString());
+    sessionStorage.setItem('donorName', 'Guest Supporter');
+    sessionStorage.setItem('campaign', campaignName);
+    window.location.href = '/donate/payment';
   };
 
   const toggleFaq = (index) => {
     setOpenFaq(openFaq === index ? -1 : index);
   };
 
-    const handleWatchVideo = () => {
-    // Video modal logic would go here
-    window.location.href = '/memoryline';
+  const handleWatchVideo = () => {
+    setIsVideoModalOpen(true);
   };
   
 
@@ -209,7 +237,7 @@ export default function Home() {
               </p>
               
               {/* Progress Section */}
-              <div className="space-y-4 mb-8">
+              <div className="space-y-4 mb-6">
                 <div className="flex justify-between items-center">
                   <span className="text-sm font-medium text-gray-700">Campaign Progress</span>
                   <span className="text-sm font-bold text-blue-600">{progress}% Complete</span>
@@ -222,28 +250,52 @@ export default function Home() {
                     style={{ width: `${progress}%` }}
                   ></div>
                 </div>
-                
-                {/* Amount Details */}
-                <div className="flex justify-between items-center pt-2">
-                  <div>
-                    <span className="text-xl font-bold text-gray-900">$5,480</span>
-                    <span className="text-gray-500 ml-2 text-sm">raised</span>
-                  </div>
-                  <div>
-                    <span className="text-lg font-semibold text-gray-700">$20,000</span>
-                    <span className="text-gray-500 ml-2 text-sm">goal</span>
-                  </div>
-                </div>
               </div>
-              
-              {/* Donation Button */}
-              <button 
-                onClick={handleDonate}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 px-6 rounded-lg transition-colors duration-200 shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
-              >
-                <Target className="w-5 h-5" />
-                Make a Donation
-              </button>
+
+              {/* Quick Amount and Custom Amount Selectors */}
+              <form onSubmit={handleHeroDonateSubmit} className="space-y-4">
+                <div className="grid grid-cols-3 gap-2">
+                  {[10, 20, 50].map((amt) => (
+                    <button
+                      key={amt}
+                      type="button"
+                      onClick={() => {
+                        setSelectedHeroAmount(amt);
+                        setCustomHeroAmount('');
+                      }}
+                      className={`py-2.5 rounded-xl font-bold border transition-all duration-200 ${
+                        selectedHeroAmount === amt && !customHeroAmount
+                          ? 'bg-blue-600 text-white border-blue-600 shadow-md'
+                          : 'bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100'
+                      }`}
+                    >
+                      ${amt}
+                    </button>
+                  ))}
+                </div>
+
+                <div>
+                  <input
+                    type="number"
+                    value={customHeroAmount}
+                    onChange={(e) => {
+                      setCustomHeroAmount(e.target.value);
+                      setSelectedHeroAmount(0);
+                    }}
+                    placeholder="Enter Custom Amount ($)"
+                    className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-gray-700 font-semibold"
+                  />
+                </div>
+
+                {/* Donation Button */}
+                <button 
+                  type="submit"
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center gap-2 transform hover:-translate-y-0.5"
+                >
+                  <Target className="w-5 h-5" />
+                  Donate Now
+                </button>
+              </form>
 
               {/* Trust Indicators */}
               <div className="flex items-center justify-center gap-6 mt-6 pt-6 border-t border-gray-100">
@@ -267,7 +319,7 @@ export default function Home() {
     </section>
 
       {/* About Section */}
-        <section className="py-24 bg-white relative overflow-hidden">
+        <section id="about" className="py-24 bg-white relative overflow-hidden">
       {/* Floating background elements */}
       <div className="absolute top-20 left-10 w-20 h-20 bg-gradient-to-r from-cyan-400/10 to-purple-500/10 rounded-full animate-pulse"></div>
       <div className="absolute bottom-32 right-20 w-16 h-16 bg-gradient-to-r from-pink-400/10 to-red-500/10 transform rotate-45 animate-bounce"></div>
@@ -319,173 +371,176 @@ export default function Home() {
               ))}
             </div>
 
-            <button 
-              onClick={handleDonate}
-              className="bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700 text-white px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
-            >
-              Join Our Mission
-            </button>
+            <div className="flex gap-4">
+              <button 
+                onClick={() => window.location.href = '/rebuild-gaza'}
+                className="bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700 text-white px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+              >
+                Get Involved
+              </button>
+              <button 
+                onClick={() => window.location.href = '/#about'}
+                className="border-2 border-cyan-500 text-cyan-600 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 transform hover:scale-105 hover:bg-cyan-50"
+              >
+                Learn More
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
 {/* Featured Campaign */}
-<section className="py-16 bg-gradient-to-br from-gray-50 to-gray-100 relative overflow-hidden min-h-screen">
+<section id="projects" className="py-16 bg-gradient-to-br from-gray-50 to-gray-100 relative overflow-hidden min-h-screen">
   {/* Interactive Animated Background */}
   <div className="absolute inset-0 overflow-hidden">
-    {/* Large floating orbs */}
-    <div className="absolute -top-10 -right-10  w-32 h-32 bg-gradient-to-br from-purple-400/10 to-cyan-500/10 rounded-full blur-3xl animate-pulse hover:scale-110 transition-transform duration-1000 cursor-pointer"></div>
-    <div className="absolute -bottom-10 -left-10 w-24 h-24 bg-gradient-to-tr from-cyan-400/10 to-purple-500/10 rounded-full blur-3xl animate-pulse hover:scale-110 transition-transform duration-1000 cursor-pointer" style={{animationDelay: '1s'}}></div>
-    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-60 h-60 bg-gradient-to-r from-purple-400/5 to-cyan-400/5 rounded-full blur-2xl animate-pulse hover:scale-110 transition-transform duration-1000 cursor-pointer" style={{animationDelay: '0.5s'}}></div>
-    
-    {/* Floating particles */}
-    <div className="absolute top-20 left-20 w-4 h-4 bg-purple-400/20 rounded-full animate-bounce" style={{animationDelay: '0s', animationDuration: '3s'}}></div>
-    <div className="absolute top-40 right-32 w-3 h-3 bg-cyan-400/30 rounded-full animate-bounce" style={{animationDelay: '1s', animationDuration: '2.5s'}}></div>
-    <div className="absolute bottom-32 left-32 w-5 h-5 bg-purple-300/25 rounded-full animate-bounce" style={{animationDelay: '2s', animationDuration: '4s'}}></div>
-    <div className="absolute top-60 left-1/3 w-2 h-2 bg-cyan-300/40 rounded-full animate-bounce" style={{animationDelay: '0.5s', animationDuration: '3.5s'}}></div>
-    <div className="absolute bottom-60 right-20 w-6 h-6 bg-purple-200/20 rounded-full animate-bounce" style={{animationDelay: '1.5s', animationDuration: '2.8s'}}></div>
-    
-    {/* Floating geometric shapes */}
-    <div className="absolute top-1/4 left-10 w-8 h-8 border-2 border-cyan-300/30 rotate-45 animate-spin" style={{animationDuration: '8s'}}></div>
-    <div className="absolute bottom-1/4 right-10 w-6 h-6 border-2 border-purple-300/30 animate-spin" style={{animationDuration: '6s', animationDirection: 'reverse'}}></div>
-    <div className="absolute top-1/2 right-1/4 w-4 h-8 bg-gradient-to-b from-cyan-200/20 to-purple-200/20 animate-pulse" style={{animationDelay: '1s'}}></div>
-    
-    {/* Moving gradient lines */}
-    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-purple-300/30 to-transparent animate-pulse" style={{animationDuration: '4s'}}></div>
-    <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-300/30 to-transparent animate-pulse" style={{animationDelay: '2s', animationDuration: '4s'}}></div>
-    
-    {/* Interactive hover zones */}
-    <div className="absolute top-10 right-10 w-20 h-20 rounded-full hover:bg-purple-200/10 transition-all duration-500 cursor-pointer group">
-      <div className="w-full h-full rounded-full bg-gradient-to-br from-purple-300/20 to-cyan-300/20 group-hover:scale-150 transition-transform duration-700"></div>
-    </div>
-    <div className="absolute bottom-10 left-10 w-16 h-16 rounded-full hover:bg-cyan-200/10 transition-all duration-500 cursor-pointer group">
-      <div className="w-full h-full rounded-full bg-gradient-to-br from-cyan-300/20 to-purple-300/20 group-hover:scale-150 transition-transform duration-700"></div>
-    </div>
+    <div className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-purple-400/10 to-cyan-500/10 rounded-full blur-3xl animate-pulse cursor-pointer"></div>
+    <div className="absolute -bottom-10 -left-10 w-24 h-24 bg-gradient-to-tr from-cyan-400/10 to-purple-500/10 rounded-full blur-3xl animate-pulse cursor-pointer"></div>
   </div>
 
   <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     {/* Header */}
-    <div className="text-center mb-16 transform transition-all duration-1000 translate-y-0 opacity-100">
-      <div className="inline-flex items-center gap-2 px-4 py-2 bg-purple-100 rounded-full mb-6 shadow-sm hover:shadow-md transition-all duration-300 hover:scale-105">
+    <div className="text-center mb-8">
+      <div className="inline-flex items-center gap-2 px-4 py-2 bg-purple-100 rounded-full mb-6">
         <div className="w-2 h-2 bg-purple-600 rounded-full animate-pulse"></div>
-        <svg className="w-4 h-4 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
-          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-        </svg>
-        <span className="text-purple-700 font-medium text-sm">🎯 Active Campaign</span>
+        <span className="text-purple-700 font-medium text-sm">🎯 Active Campaigns</span>
       </div>
-      
       <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight">
-        Urgent: Help Those 
-        <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-purple-600 animate-pulse"> Who Need It Most</span>
+        Urgent: Help Those <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-purple-600 animate-pulse">Who Need It Most</span>
       </h2>
-      
-      <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-        Your support makes a real difference in the lives of families affected by conflict in Gaza.
-        <span className="text-cyan-600 font-semibold"> Every contribution creates lasting change.</span>
-      </p>
     </div>
 
-    {/* Main Campaign Card */}
-    <div className="max-w-3xl mx-auto transform transition-all duration-1000 translate-y-0 opacity-100">
-      <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl overflow-hidden border border-white/20 hover:scale-[1.02] hover:shadow-3xl transition-all duration-500 group">
-        {/* Image Section */}
-        <div className="relative overflow-hidden">
-          <img 
-            src="https://www.unrwa.org/sites/default/files/content/image_galleries/image_gallery_134456_46109_1705304379.jpg" 
-            alt="Gaza Crisis Support" 
-            className="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-700"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-          
-          {/* Floating Progress Indicator */}
-          <div className="absolute top-6 right-6 bg-white/90 backdrop-blur-sm rounded-2xl p-4 shadow-lg hover:shadow-xl transition-all duration-300 animate-bounce">
-            <div className="text-center">
-              <div className="text-2xl font-bold bg-gradient-to-r from-cyan-500 to-purple-600 bg-clip-text text-transparent">78%</div>
-              <div className="text-sm text-gray-600 font-medium">Complete</div>
-            </div>
-          </div>
-          
-          <div className="absolute bottom-6 left-6 right-6">
-            <h3 className="text-white font-bold text-xl mb-2 group-hover:scale-105 transition-transform duration-300">Emergency Relief for Gaza Families</h3>
-            <p className="text-gray-200 group-hover:text-white transition-colors duration-300">Providing food, medical aid, and shelter to those in desperate need</p>
-          </div>
-        </div>
+    {/* Campaign Selector Tabs */}
+    <div className="flex justify-center gap-4 mb-12 flex-wrap">
+      {[
+        { id: 'relief', label: 'Emergency Relief', icon: '🚨' },
+        { id: 'orphan', label: 'Orphan Sponsorship', icon: '👶' },
+        { id: 'medical', label: 'Medical Aid', icon: '💊' }
+      ].map((tab) => (
+        <button
+          key={tab.id}
+          type="button"
+          onClick={() => setActiveCampaignTab(tab.id)}
+          className={`px-6 py-3 rounded-full font-bold transition-all duration-300 flex items-center gap-2 shadow ${
+            activeCampaignTab === tab.id
+              ? 'bg-gradient-to-r from-cyan-500 to-purple-600 text-white transform scale-105'
+              : 'bg-white text-gray-700 hover:bg-gray-100'
+          }`}
+        >
+          <span>{tab.icon}</span>
+          <span>{tab.label}</span>
+        </button>
+      ))}
+    </div>
 
-        {/* Content Section */}
-        <div className="p-8">
-          {/* Progress Section */}
-          <div className="space-y-6 mb-8">
-            <div className="flex justify-between items-center">
-              <span className="text-gray-700 font-semibold text-lg">Campaign Progress</span>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-purple-600 font-bold text-xl animate-pulse">78%</span>
+    {/* Dynamic Campaign Card */}
+    {(() => {
+      const campaigns = {
+        relief: {
+          title: "Emergency Relief for Gaza Families",
+          description: "Providing food, medical aid, and shelter to those in desperate need",
+          img: "https://www.unrwa.org/sites/default/files/content/image_galleries/image_gallery_134456_46109_1705304379.jpg",
+          progress: 78,
+          raised: 42650,
+          goal: 55000,
+          amount: 100
+        },
+        orphan: {
+          title: "Orphan Sponsorship Program",
+          description: "Providing shelter, nutrition, education, and healthcare to children who lost parents",
+          img: "https://www.unrwa.org/sites/default/files/content/image_galleries/image_gallery_134456_46109_1705304379.jpg",
+          progress: 50,
+          raised: 25000,
+          goal: 50000,
+          amount: 50
+        },
+        medical: {
+          title: "Critical Medical Aid",
+          description: "Sponsoring vital medical supplies, bandages, medicines and support for field clinics",
+          img: "https://i.guim.co.uk/img/media/078149301f5b2c292cf292e63b0f96c4f0968497/0_279_8423_5057/master/8423.jpg?width=1900&dpr=1&s=none&crop=none",
+          progress: 60,
+          raised: 18000,
+          goal: 30000,
+          amount: 250
+        }
+      };
+
+      const activeCampaign = campaigns[activeCampaignTab] || campaigns.relief;
+
+      return (
+        <div className="max-w-3xl mx-auto">
+          <div className="bg-white/95 rounded-3xl shadow-2xl overflow-hidden border border-gray-100 transition-all duration-300">
+            {/* Image Section */}
+            <div className="relative h-80 overflow-hidden">
+              <img 
+                src={activeCampaign.img} 
+                alt={activeCampaign.title} 
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+              
+              {/* Floating Progress Indicator */}
+              <div className="absolute top-6 right-6 bg-white/95 rounded-2xl p-4 shadow-lg">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-cyan-600">{activeCampaign.progress}%</div>
+                  <div className="text-xs text-gray-500 font-medium">Complete</div>
+                </div>
+              </div>
+              
+              <div className="absolute bottom-6 left-6 right-6">
+                <h3 className="text-white font-bold text-2xl mb-2">{activeCampaign.title}</h3>
+                <p className="text-gray-200">{activeCampaign.description}</p>
+              </div>
             </div>
-            
-            <div className="w-full bg-gray-200 rounded-full h-4 overflow-hidden shadow-inner">
-              <div 
-                className="bg-gradient-to-r from-cyan-400 to-purple-600 h-4 rounded-full transition-all duration-2000 ease-out shadow-lg relative overflow-hidden" 
-                style={{ width: '78%' }}
+
+            {/* Content Section */}
+            <div className="p-8">
+              {/* Progress Section */}
+              <div className="space-y-4 mb-8">
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-700 font-semibold">Campaign Progress</span>
+                  <span className="text-cyan-600 font-bold text-lg">{activeCampaign.progress}%</span>
+                </div>
+                
+                <div className="w-full bg-gray-150 rounded-full h-3 overflow-hidden shadow-inner">
+                  <div 
+                    className="bg-gradient-to-r from-cyan-400 to-purple-600 h-3 rounded-full" 
+                    style={{ width: `${activeCampaign.progress}%` }}
+                  ></div>
+                </div>
+                
+                {/* Stats Grid */}
+                <div className="grid grid-cols-2 gap-6 pt-4">
+                  <div className="text-center p-3 rounded-xl bg-gray-50 border border-gray-100">
+                    <div className="text-2xl font-bold text-gray-900">${activeCampaign.raised.toLocaleString()}</div>
+                    <div className="text-gray-500 text-sm">Raised So Far</div>
+                  </div>
+                  <div className="text-center p-3 rounded-xl bg-gray-50 border border-gray-100">
+                    <div className="text-2xl font-bold text-gray-900">${activeCampaign.goal.toLocaleString()}</div>
+                    <div className="text-gray-500 text-sm">Our Goal</div>
+                  </div>
+                </div>
+              </div>
+              
+              {/* CTA Button */}
+              <button 
+                type="button"
+                onClick={() => handleCampaignDonate(activeCampaign.amount, activeCampaign.title)}
+                className="w-full bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl text-lg flex items-center justify-center gap-3"
               >
-                <div className="absolute inset-0 bg-white/20 rounded-full animate-pulse"></div>
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-pulse transform -skew-x-12"></div>
-              </div>
-            </div>
-            
-            {/* Stats Grid */}
-            <div className="grid grid-cols-2 gap-8 mt-8">
-              <div className="text-center p-2 rounded-2xl bg-gradient-to-br from-cyan-50 to-blue-50 border border-cyan-100 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 group">
-                <div className="text-3xl font-bold text-gray-900 mb-1 group-hover:scale-110 transition-transform duration-300">$42,650</div>
-                <div className="text-gray-600 font-medium">Raised So Far</div>
-                <div className="w-8 h-1 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full mx-auto mt-2 group-hover:w-12 transition-all duration-300"></div>
-              </div>
-              <div className="text-center p-2 rounded-2xl bg-gradient-to-br from-purple-50 to-pink-50 border border-purple-100 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 group">
-                <div className="text-3xl font-bold text-gray-900 mb-1 group-hover:scale-110 transition-transform duration-300">$55,000</div>
-                <div className="text-gray-600 font-medium">Our Goal</div>
-                <div className="w-8 h-1 bg-gradient-to-r from-purple-400 to-pink-500 rounded-full mx-auto mt-2 group-hover:w-12 transition-all duration-300"></div>
-              </div>
-            </div>
-          </div>
-          
-          {/* CTA Button */}
-          <button 
-            onClick={() => console.log('Donate clicked')}
-            className="w-full bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-[1.02] shadow-lg hover:shadow-2xl text-lg relative overflow-hidden group"
-          >
-            <div className="absolute inset-0 bg-white/10 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
-            <div className="relative flex items-center justify-center gap-3">
-              <svg className="w-5 h-5 group-hover:scale-110 transition-transform duration-300" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd"/>
-              </svg>
-              <span>Support This Campaign</span>
-              <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-              </svg>
-            </div>
-          </button>
-
-          {/* Trust Indicators */}
-          <div className="mt-6 flex items-center justify-center gap-6 text-sm text-gray-500">
-            <div className="flex items-center gap-2 hover:text-green-600 transition-colors duration-300">
-              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-              <span>Verified Campaign</span>
-            </div>
-            <div className="flex items-center gap-2 hover:text-blue-600 transition-colors duration-300">
-              <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-              <span>Secure Donations</span>
-            </div>
-            <div className="flex items-center gap-2 hover:text-purple-600 transition-colors duration-300">
-              <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse"></div>
-              <span>Direct Impact</span>
+                <Heart className="w-5 h-5" />
+                <span>Support This Campaign (${activeCampaign.amount})</span>
+              </button>
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      );
+    })()}
 
     {/* Bottom Stats */}
-    <div className="mt-16 text-center transform transition-all duration-1000 translate-y-0 opacity-100">
-      <p className="text-gray-600 text-lg">
-        Join <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-purple-600">1,247 compassionate supporters</span> who have already made a difference
+    <div className="mt-12 text-center">
+      <p className="text-gray-600">
+        Join <span className="font-bold text-cyan-600">1,247 supporters</span> who have already made a difference
       </p>
     </div>
   </div>
@@ -585,8 +640,11 @@ export default function Home() {
               >
                 Donate Now
               </button>
-              <button className="border-2 border-white text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-cyan-600 transition-colors">
-                Learn More
+              <button 
+                onClick={() => window.location.href = '/rebuild-gaza'}
+                className="border-2 border-white text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-cyan-600 transition-colors"
+              >
+                Join Us
               </button>
             </div>
           </div>
@@ -616,7 +674,7 @@ export default function Home() {
       </section>
 
       {/* FAQ Section */}
-       <section className="py-24 bg-white relative overflow-hidden">
+       <section id="faq" className="py-24 bg-white relative overflow-hidden">
       {/* Floating background elements */}
       <div className="absolute top-20 left-10 w-20 h-20 bg-gradient-to-r from-cyan-400/10 to-purple-500/10 rounded-full animate-pulse"></div>
       <div className="absolute bottom-32 right-20 w-16 h-16 bg-gradient-to-r from-pink-400/10 to-red-500/10 transform rotate-45 animate-bounce"></div>
@@ -685,6 +743,30 @@ export default function Home() {
         </div>
       </div>
     </section>
+
+    {/* Video Modal Overlay */}
+    {isVideoModalOpen && (
+      <div className="fixed inset-0 bg-black/85 backdrop-blur-md flex items-center justify-center z-50 p-4">
+        <div className="bg-slate-900 rounded-3xl overflow-hidden max-w-4xl w-full shadow-2xl relative">
+          <button 
+            onClick={() => setIsVideoModalOpen(false)}
+            className="absolute top-4 right-4 text-white hover:text-gray-300 z-10 bg-white/10 rounded-full p-2"
+          >
+            ✕ Close
+          </button>
+          <div className="aspect-video w-full">
+            <iframe 
+              className="w-full h-full"
+              src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1" 
+              title="Impact Video"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+          </div>
+        </div>
+      </div>
+    )}
     </div>
   );
 }

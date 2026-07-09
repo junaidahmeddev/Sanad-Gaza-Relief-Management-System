@@ -105,7 +105,9 @@ const Navbar = () => {
               </>
             )}
           </div>
-
+          <a href="/#about" className="hover:text-purple-600 transition text-lg font-bold text-purple-600">About Us</a>
+          <a href="/#projects" className="hover:text-purple-600 transition text-lg font-bold text-purple-600">Projects</a>
+          <a href="/memory" className="hover:text-purple-600 transition text-lg font-bold text-purple-600">Stories</a>
           <a href="/contact" className="hover:text-purple-600 transition text-lg font-bold text-purple-600">Contact Us</a>
           
           <a
@@ -151,6 +153,9 @@ const Navbar = () => {
             </div>
           </details>
 
+          <a href="/#about" className="block py-2 text-lg font-bold text-purple-600">About Us</a>
+          <a href="/#projects" className="block py-2 text-lg font-bold text-purple-600">Projects</a>
+          <a href="/memory" className="block py-2 text-lg font-bold text-purple-600">Stories</a>
           <a href="/contact" className="block py-2 text-lg font-bold text-purple-600">Contact Us</a>
           <a href="/donate" className="block bg-purple-100 text-purple-600 px-8 py-3 rounded-lg text-center mt-4 border border-purple-300 text-lg font-bold">
             Donate Now ♥

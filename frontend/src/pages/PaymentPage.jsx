@@ -5,6 +5,11 @@ const PaymentPage = () => {
   const [amount, setAmount] = useState('');
   const [donorName, setDonorName] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState('Bank Transfer');
+  const [transactionId, setTransactionId] = useState('');
+  const [senderAccount, setSenderAccount] = useState('');
+  const [notes, setNotes] = useState('');
+  
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -14,37 +19,45 @@ const PaymentPage = () => {
     setDonorName(storedName || 'Guest');
   }, []);
 
-  const handlePayment = async () => {
-    setIsProcessing(true); // "Processing" state shuru karein
+  const handlePaymentSubmit = async (e) => {
+    e.preventDefault();
+    if (!transactionId.trim()) {
+      alert("Please enter a valid Transaction ID / Reference Number.");
+      return;
+    }
+
+    setIsProcessing(true);
 
     try {
-      // ✅ Step 1: Data ko Render live database mein save karein
-      const response = await fetch('https://sanad-gaza-relief-management-system.onrender.com/api/donate', {
+      // Post details of the manual transfer to backend
+      const response = await fetch('http://localhost:5000/api/donate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ donorName, amount, status: 'Completed (Mock)' })
+        body: JSON.stringify({ 
+          donor_name: donorName, 
+          amount: parseFloat(amount), 
+          type: paymentMethod,
+          item_description: `TxID: ${transactionId} | Sender: ${senderAccount} | Notes: ${notes}`
+        })
       });
 
-      // ✅ Step 2: 3 seconds ka wait karein taake payment real lage
-      setTimeout(() => {
+      if (response.ok) {
         setIsProcessing(false);
-        if (response.ok) {
-          navigate('/donate/success');
-        } else {
-          alert("Database connection issue. Check Render logs.");
-        }
-      }, 3000);
-
+        navigate('/donate/success');
+      } else {
+        setIsProcessing(false);
+        alert("Failed to submit manual transfer details. Please try again.");
+      }
     } catch (error) {
       console.error("Connection Error:", error);
       setIsProcessing(false);
-      alert("Render backend se rabta nahi ho pa raha. Console (F12) check karein.");
+      alert("Connection issue. Please verify the backend is running.");
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 p-6 font-sans">
-      <div className="bg-white p-10 rounded-3xl shadow-2xl text-center max-w-md w-full border border-gray-100">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-6 font-sans">
+      <div className="bg-white p-10 rounded-3xl shadow-2xl text-center max-w-lg w-full border border-gray-100">
         <div className="flex justify-center mb-6">
            <div className="bg-green-100 p-4 rounded-full">
              <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -53,38 +66,82 @@ const PaymentPage = () => {
            </div>
         </div>
 
-        <h2 className="text-3xl font-extrabold text-gray-800 mb-2">Secure Checkout</h2>
-        <p className="text-gray-500 mb-8">Confirming donation for <span className="font-bold text-gray-800">{donorName}</span></p>
+        <h2 className="text-3xl font-extrabold text-gray-800 mb-2">Manual Transfer Verification</h2>
+        <p className="text-gray-500 mb-6">Please transfer the amount and submit details for verification.</p>
         
-        <div className="bg-gray-50 p-6 rounded-2xl mb-8 flex justify-between items-center">
-          <span className="text-gray-600 font-medium text-lg">Amount to Pay:</span>
+        <div className="bg-gray-50 p-6 rounded-2xl mb-6 flex justify-between items-center">
+          <span className="text-gray-600 font-medium text-lg">Amount to Transfer:</span>
           <span className="text-3xl font-black text-green-600">${amount}</span>
         </div>
 
-        <button
-          onClick={handlePayment}
-          disabled={isProcessing}
-          className={`w-full py-4 rounded-xl text-lg font-bold transition-all duration-300 shadow-lg ${
-            isProcessing 
-            ? 'bg-gray-400 cursor-not-allowed text-white' 
-            : 'bg-green-600 hover:bg-green-700 text-white transform hover:-translate-y-1'
-          }`}
-        >
-          {isProcessing ? (
-            <div className="flex items-center justify-center">
-              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-3"></div>
-              Processing Securely...
-            </div>
-          ) : (
-            'Confirm & Pay'
-          )}
-        </button>
-        
-        <div className="mt-8 flex justify-center space-x-4 opacity-40">
-           <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal" className="h-5" />
-           <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa" className="h-5" />
-           <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard" className="h-5" />
-        </div>
+        <form onSubmit={handlePaymentSubmit} className="space-y-4 text-left">
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-1">Payment Method</label>
+            <select
+              value={paymentMethod}
+              onChange={(e) => setPaymentMethod(e.target.value)}
+              className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300"
+            >
+              <option value="Bank Transfer">Bank Transfer</option>
+              <option value="EasyPaisa">EasyPaisa</option>
+              <option value="JazzCash">JazzCash</option>
+              <option value="Cash/Other">Other Cash Delivery / Agency</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-1">Transaction ID / Reference Number *</label>
+            <input
+              type="text"
+              required
+              value={transactionId}
+              onChange={(e) => setTransactionId(e.target.value)}
+              placeholder="e.g., TXN123456789"
+              className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-1">Sender's Account No / Phone Number</label>
+            <input
+              type="text"
+              value={senderAccount}
+              onChange={(e) => setSenderAccount(e.target.value)}
+              placeholder="e.g., 03001234567 or Acc No."
+              className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-1">Notes / Additional Info</label>
+            <textarea
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              placeholder="Add bank name or other details..."
+              rows={2}
+              className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300"
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={isProcessing}
+            className={`w-full py-4 rounded-xl text-lg font-bold transition-all duration-300 shadow-lg mt-6 ${
+              isProcessing 
+              ? 'bg-gray-400 cursor-not-allowed text-white' 
+              : 'bg-green-600 hover:bg-green-700 text-white transform hover:-translate-y-1'
+            }`}
+          >
+            {isProcessing ? (
+              <div className="flex items-center justify-center">
+                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-3"></div>
+                Verifying Transfer...
+              </div>
+            ) : (
+              'Submit Transfer Details'
+            )}
+          </button>
+        </form>
       </div>
     </div>
   );

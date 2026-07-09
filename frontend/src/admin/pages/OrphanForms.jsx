@@ -8,10 +8,13 @@ const OrphanForms = () => {
   useEffect(() => {
     fetchOrphans();
   }, []);
-
   const fetchOrphans = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/orphans');
+      const response = await axios.get('http://localhost:5000/api/orphans', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
+        }
+      });
       setOrphans(response.data);
       setLoading(false);
     } catch (error) {
@@ -22,7 +25,11 @@ const OrphanForms = () => {
 
   const updateStatus = async (id, status) => {
     try {
-      await axios.put(`http://localhost:5000/api/orphans/${id}`, { status });
+      await axios.put(`http://localhost:5000/api/orphans/${id}`, { status }, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
+        }
+      });
       fetchOrphans(); // Refresh the list
     } catch (error) {
       console.error('Error updating status:', error);

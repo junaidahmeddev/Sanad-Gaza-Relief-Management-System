@@ -2,6 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const Memory = require('../models/Memory');
+const verifyAdmin = require('../middleware/verifyAdmin');
 
 // Create Memory
 router.post('/', async (req, res) => {
@@ -36,7 +37,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // Admin route: Get all memories (approved and unapproved)
-router.get('/admin/all', async (req, res) => {
+router.get('/admin/all', verifyAdmin, async (req, res) => {
   try {
     const memories = await Memory.find().sort({ createdAt: -1 });
     res.json(memories);
@@ -46,7 +47,7 @@ router.get('/admin/all', async (req, res) => {
 });
 
 // Admin route: Approve memory
-router.patch('/:id/approve', async (req, res) => {
+router.patch('/:id/approve', verifyAdmin, async (req, res) => {
   try {
     const memory = await Memory.findByIdAndUpdate(
       req.params.id,
@@ -61,7 +62,7 @@ router.patch('/:id/approve', async (req, res) => {
 });
 
 // Update Memory
-router.put('/:id', async (req, res) => {
+router.put('/:id', verifyAdmin, async (req, res) => {
   try {
     const memory = await Memory.findByIdAndUpdate(req.params.id, req.body, { new: true });
     if (!memory) return res.status(404).json({ error: 'Not found' });
@@ -72,7 +73,7 @@ router.put('/:id', async (req, res) => {
 });
 
 // Delete Memory
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', verifyAdmin, async (req, res) => {
   try {
     await Memory.findByIdAndDelete(req.params.id);
     res.status(204).end();

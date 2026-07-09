@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
+const verifyAdmin = require('../middleware/verifyAdmin');
 const {
   createStory,
   getAllStories,
@@ -12,9 +14,14 @@ const {
 } = require('../controllers/storyController');
 
 // Multer setup for file upload
+const uploadDir = 'uploads/';
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'uploads/'); // You can create this folder manually
+    cb(null, uploadDir);
   },
   filename: (req, file, cb) => {
     cb(null, Date.now() + '-' + file.originalname);
@@ -27,7 +34,7 @@ router.post('/', upload.fields([{ name: 'image' }, { name: 'video' }]), createSt
 router.get('/', getAllStories);
 router.get('/type/:type', getStoriesByType);
 router.get('/:id', getStoryById);
-router.patch('/:id/approve', approveStory);
-router.delete('/:id', deleteStory);
+router.patch('/:id/approve', verifyAdmin, approveStory);
+router.delete('/:id', verifyAdmin, deleteStory);
 
 module.exports = router;

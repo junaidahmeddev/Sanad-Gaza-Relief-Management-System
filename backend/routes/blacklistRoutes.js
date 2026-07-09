@@ -2,9 +2,10 @@
 const express = require('express');
 const router = express.Router();
 const Blacklist = require('../models/Blacklist');
+const verifyAdmin = require('../middleware/verifyAdmin');
 
 // Create Blacklist Entry
-router.post('/', async (req, res) => {
+router.post('/', verifyAdmin, async (req, res) => {
   try {
     const entry = new Blacklist(req.body);
     await entry.save();
@@ -36,7 +37,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // Update Blacklist Entry
-router.put('/:id', async (req, res) => {
+router.put('/:id', verifyAdmin, async (req, res) => {
   try {
     const entry = await Blacklist.findByIdAndUpdate(req.params.id, req.body, { new: true });
     if (!entry) return res.status(404).json({ error: 'Not found' });
@@ -47,7 +48,7 @@ router.put('/:id', async (req, res) => {
 });
 
 // Delete Blacklist Entry
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', verifyAdmin, async (req, res) => {
   try {
     await Blacklist.findByIdAndDelete(req.params.id);
     res.status(204).end();

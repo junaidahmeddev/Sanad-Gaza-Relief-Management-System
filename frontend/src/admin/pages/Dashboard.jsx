@@ -30,11 +30,12 @@ const Dashboard = () => {
 
   const fetchDashboardData = async () => {
     try {
+      const headers = { 'Authorization': `Bearer ${localStorage.getItem('adminToken')}` };
       const [donationsRes, volunteersRes, orphansRes, storiesRes] = await Promise.all([
-        fetch('http://localhost:5000/api/donations').catch(() => ({ json: () => [] })),
-        fetch('http://localhost:5000/api/volunteers').catch(() => ({ json: () => [] })),
-        fetch('http://localhost:5000/api/orphans').catch(() => ({ json: () => [] })),
-        fetch('http://localhost:5000/api/stories').catch(() => ({ json: () => [] }))
+        fetch('http://localhost:5000/api/donations', { headers }).catch(() => ({ json: () => [] })),
+        fetch('http://localhost:5000/api/volunteers', { headers }).catch(() => ({ json: () => [] })),
+        fetch('http://localhost:5000/api/orphans', { headers }).catch(() => ({ json: () => [] })),
+        fetch('http://localhost:5000/api/stories', { headers }).catch(() => ({ json: () => [] }))
       ]);
 
       const [donationsData, volunteersData, orphansData, storiesData] = await Promise.all([

@@ -11,7 +11,11 @@ const VolunteerForms = () => {
 
   const fetchVolunteers = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/volunteers');
+      const response = await axios.get('http://localhost:5000/api/volunteers', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
+        }
+      });
       setVolunteers(response.data);
       setLoading(false);
     } catch (error) {
@@ -22,7 +26,11 @@ const VolunteerForms = () => {
 
   const updateStatus = async (id, status) => {
     try {
-      await axios.put(`http://localhost:5000/api/volunteers/${id}`, { status });
+      await axios.put(`http://localhost:5000/api/volunteers/${id}`, { status }, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
+        }
+      });
       fetchVolunteers(); // Refresh the list
     } catch (error) {
       console.error('Error updating status:', error);

@@ -2,9 +2,10 @@
 const express = require('express');
 const router = express.Router();
 const Orphan = require('../models/Orphan');
+const verifyAdmin = require('../middleware/verifyAdmin');
 
 // Create Orphan
-router.post('/', async (req, res) => {
+router.post('/', verifyAdmin, async (req, res) => {
   try {
     const orphan = new Orphan(req.body);
     await orphan.save();
@@ -36,7 +37,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // Update Orphan
-router.put('/:id', async (req, res) => {
+router.put('/:id', verifyAdmin, async (req, res) => {
   try {
     const orphan = await Orphan.findByIdAndUpdate(req.params.id, req.body, { new: true });
     if (!orphan) return res.status(404).json({ error: 'Not found' });
@@ -47,7 +48,7 @@ router.put('/:id', async (req, res) => {
 });
 
 // Delete Orphan
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', verifyAdmin, async (req, res) => {
   try {
     await Orphan.findByIdAndDelete(req.params.id);
     res.status(204).end();

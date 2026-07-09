@@ -18,7 +18,11 @@ const DonationOverview = () => {
 
   const fetchDonations = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/donations');
+      const response = await axios.get('http://localhost:5000/api/donations', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
+        }
+      });
       setDonations(response.data);
     } catch (error) {
       console.error('Error fetching donations:', error);
@@ -27,7 +31,11 @@ const DonationOverview = () => {
 
   const fetchStats = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/dashboard/stats');
+      const response = await axios.get('http://localhost:5000/api/dashboard/stats', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
+        }
+      });
       setStats(response.data);
       setLoading(false);
     } catch (error) {

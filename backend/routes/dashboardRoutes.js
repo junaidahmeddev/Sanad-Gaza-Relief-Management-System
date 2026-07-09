@@ -6,9 +6,10 @@ const Story = require('../models/Story');
 const Memory = require('../models/Memory');
 const Orphan = require('../models/Orphan');
 const Volunteer = require('../models/Volunteer');
+const verifyAdmin = require('../middleware/verifyAdmin');
 
 // Dashboard summary stats
-router.get('/stats', async (req, res) => {
+router.get('/stats', verifyAdmin, async (req, res) => {
   try {
     const [donationCount, donorCount, totalAmount, storyCount, memoryCount, orphanCount, volunteerCount] = await Promise.all([
       Donation.countDocuments(),

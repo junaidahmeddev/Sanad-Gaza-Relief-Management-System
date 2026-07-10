@@ -439,7 +439,7 @@ export default function Home() {
         relief: {
           title: "Emergency Relief for Gaza Families",
           description: "Providing food, medical aid, and shelter to those in desperate need",
-          img: "/emergency-relief.png",
+          img: "/emergency-relief-new.jpg",
           progress: 78,
           raised: 42650,
           goal: 55000,
@@ -448,7 +448,7 @@ export default function Home() {
         orphan: {
           title: "Orphan Sponsorship Program",
           description: "Providing shelter, nutrition, education, and healthcare to children who lost parents",
-          img: "https://images.unsplash.com/photo-1516627145497-ae6968895b74?auto=format&fit=crop&q=100&w=1600",
+          img: "/orphan-sponsor.png",
           progress: 50,
           raised: 25000,
           goal: 50000,
@@ -457,7 +457,7 @@ export default function Home() {
         medical: {
           title: "Critical Medical Aid",
           description: "Sponsoring vital medical supplies, bandages, medicines and support for field clinics",
-          img: "https://images.pexels.com/photos/4047073/pexels-photo-4047073.jpeg?auto=compress&cs=tinysrgb&w=1600",
+          img: "/medical-aid.jpg",
           progress: 60,
           raised: 18000,
           goal: 30000,

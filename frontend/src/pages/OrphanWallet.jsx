@@ -6,7 +6,7 @@ import React, { useState, useRef } from "react";
       id: 1, 
       name: "Aisha", 
       age: 8,
-      image: "/images/orphan1.jpg",
+      image: "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?w=500&auto=format&fit=crop&q=60",
       location: "Karachi, Pakistan",
       interests: "Drawing, Reading"
     },
@@ -14,7 +14,7 @@ import React, { useState, useRef } from "react";
       id: 2, 
       name: "Ahmed", 
       age: 12,
-      image: "/images/orphan2.jpg",
+      image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=500&auto=format&fit=crop&q=60",
       location: "Lahore, Pakistan",
       interests: "Football, Mathematics"
     },
@@ -22,7 +22,7 @@ import React, { useState, useRef } from "react";
       id: 3, 
       name: "Fatima", 
       age: 6,
-      image: "/images/orphan3.jpg",
+      image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=500&auto=format&fit=crop&q=60",
       location: "Islamabad, Pakistan",
       interests: "Dancing, Painting"
     },
@@ -30,7 +30,7 @@ import React, { useState, useRef } from "react";
       id: 4, 
       name: "Hassan", 
       age: 10,
-      image: "/images/orphan4.jpg",
+      image: "https://images.unsplash.com/photo-1484820540004-14229fe36ca4?w=500&auto=format&fit=crop&q=60",
       location: "Multan, Pakistan",
       interests: "Cricket, Science"
     },
@@ -38,7 +38,7 @@ import React, { useState, useRef } from "react";
       id: 5, 
       name: "Zara", 
       age: 7,
-      image: "/images/orphan5.jpg",
+      image: "https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?w=500&auto=format&fit=crop&q=60",
       location: "Faisalabad, Pakistan",
       interests: "Music, Stories"
     },
@@ -46,7 +46,7 @@ import React, { useState, useRef } from "react";
       id: 6, 
       name: "Omar", 
       age: 9,
-      image: "/images/orphan6.jpg",
+      image: "https://images.unsplash.com/photo-1517677129300-07b130802f46?w=500&auto=format&fit=crop&q=60",
       location: "Peshawar, Pakistan",
       interests: "Building, Games"
     },

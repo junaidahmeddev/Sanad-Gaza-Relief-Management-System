@@ -19,7 +19,7 @@ export default function MartyrsPage() {
           id: story._id,
           title: story.title,
           description: story.description,
-          mediaUrl: story.image ? `http://localhost:5000/uploads/${story.image}` : '/images/martyr-default.jpg',
+          mediaUrl: story.image ? `http://localhost:5000/uploads/${story.image}` : 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&auto=format&fit=crop&q=60',
           mediaType: story.image ? 'image' : 'image',
           createdAt: story.createdAt
         }));
@@ -33,14 +33,14 @@ export default function MartyrsPage() {
             id: '1',
             title: "Ahmed Al-Masri", 
             description: "A brave soul who lost his life while saving others during the siege of Gaza.", 
-            mediaUrl: "/images/martyr1.jpg", 
+            mediaUrl: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=600&auto=format&fit=crop&q=60", 
             mediaType: "image" 
           },
           { 
             id: '2',
             title: "Dr. Sarah Hassan", 
             description: "Medical professional who worked tirelessly to save lives during the conflict.", 
-            mediaUrl: "/images/martyr2.jpg", 
+            mediaUrl: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=600&auto=format&fit=crop&q=60", 
             mediaType: "image" 
           }
         ]);

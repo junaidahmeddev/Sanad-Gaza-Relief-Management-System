@@ -19,7 +19,7 @@ export default function SurvivorsPage() {
           id: story._id,
           title: story.title,
           description: story.description,
-          mediaUrl: story.image ? `http://localhost:5000/uploads/${story.image}` : '/images/survivor-default.jpg',
+          mediaUrl: story.image ? `http://localhost:5000/uploads/${story.image}` : 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=600&auto=format&fit=crop&q=60',
           mediaType: story.image ? 'image' : 'image',
           createdAt: story.createdAt
         }));
@@ -33,14 +33,14 @@ export default function SurvivorsPage() {
             id: '1',
             title: "Layla's Story", 
             description: "Despite losing both parents, 7-year-old Layla was pulled from the rubble alive after 18 hours.", 
-            mediaUrl: "/images/survivor1.jpg", 
+            mediaUrl: "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?w=600&auto=format&fit=crop&q=60", 
             mediaType: "image" 
           },
           { 
             id: '2',
             title: "Amina Hassan", 
             description: "Survived bombing in Gaza and now leads a youth support group.", 
-            mediaUrl: "/images/survivor2.jpg", 
+            mediaUrl: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=600&auto=format&fit=crop&q=60", 
             mediaType: "image" 
           }
         ]);

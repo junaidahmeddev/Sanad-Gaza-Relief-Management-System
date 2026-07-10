@@ -78,7 +78,7 @@ const MemoryListPage = ({ title, items, type }) => {
                         alt={item.title} 
                         className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                         onError={(e) => {
-                          e.target.src = '/images/default-story.jpg';
+                          e.target.src = 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=600&auto=format&fit=crop&q=60';
                         }}
                       />
                     ) : item.mediaType === "video" ? (

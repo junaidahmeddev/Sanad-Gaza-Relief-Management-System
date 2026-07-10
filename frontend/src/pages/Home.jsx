@@ -439,7 +439,7 @@ export default function Home() {
         relief: {
           title: "Emergency Relief for Gaza Families",
           description: "Providing food, medical aid, and shelter to those in desperate need",
-          img: "https://www.unrwa.org/sites/default/files/content/image_galleries/image_gallery_134456_46109_1705304379.jpg",
+          img: "/emergency-relief.png",
           progress: 78,
           raised: 42650,
           goal: 55000,
@@ -448,7 +448,7 @@ export default function Home() {
         orphan: {
           title: "Orphan Sponsorship Program",
           description: "Providing shelter, nutrition, education, and healthcare to children who lost parents",
-          img: "https://www.unrwa.org/sites/default/files/content/image_galleries/image_gallery_134456_46109_1705304379.jpg",
+          img: "https://images.unsplash.com/photo-1516627145497-ae6968895b74?auto=format&fit=crop&q=100&w=1600",
           progress: 50,
           raised: 25000,
           goal: 50000,
@@ -457,7 +457,7 @@ export default function Home() {
         medical: {
           title: "Critical Medical Aid",
           description: "Sponsoring vital medical supplies, bandages, medicines and support for field clinics",
-          img: "https://i.guim.co.uk/img/media/078149301f5b2c292cf292e63b0f96c4f0968497/0_279_8423_5057/master/8423.jpg?width=1900&dpr=1&s=none&crop=none",
+          img: "https://images.pexels.com/photos/4047073/pexels-photo-4047073.jpeg?auto=compress&cs=tinysrgb&w=1600",
           progress: 60,
           raised: 18000,
           goal: 30000,
@@ -471,13 +471,13 @@ export default function Home() {
         <div className="max-w-3xl mx-auto">
           <div className="bg-white/95 rounded-3xl shadow-2xl overflow-hidden border border-gray-100 transition-all duration-300">
             {/* Image Section */}
-            <div className="relative h-80 overflow-hidden">
+            <div className="relative h-96 overflow-hidden">
               <img 
                 src={activeCampaign.img} 
                 alt={activeCampaign.title} 
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover object-center transform hover:scale-105 transition-transform duration-700"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
               
               {/* Floating Progress Indicator */}
               <div className="absolute top-6 right-6 bg-white/95 rounded-2xl p-4 shadow-lg">

@@ -1,6 +1,23 @@
 # 🌍 Sanad – Gaza Relief Management System 🇵🇸
 
+![License](https://img.shields.io/badge/License-MIT-blue.svg)
+![React](https://img.shields.io/badge/React-20232A?style=flat&logo=react&logoColor=61DAFB)
+![Node.js](https://img.shields.io/badge/Node.js-43853D?style=flat&logo=node.js&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=flat&logo=mongodb&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat&logo=tailwind-css&logoColor=white)
+
+[![Live Demo](https://img.shields.io/badge/Live_Demo-View_Deployment-success?style=for-the-badge)](https://your-vercel-deployment-link.vercel.app/)
+
 **Sanad** is a premium full-stack humanitarian relief platform designed to support reconstruction, aid distribution, and support programs in Gaza. It enables donor transparency, live campaign management, and secure local/international transfer verification.
+
+---
+
+## 📸 Screenshots
+![Homepage Screenshot](/placeholder-homepage.png)
+*Sanad Gaza Relief Homepage displaying active campaigns and transparent donation tracking.*
+
+![Admin Dashboard](/placeholder-dashboard.png)
+*Admin Dashboard for verifying transfers and reviewing memorial stories.*
 
 ---
 
@@ -23,37 +40,78 @@
 
 ---
 
-## 💻 Quick Start & Installation
+## 📂 Project Structure
 
-### 1. Clone & Install Dependencies
-Run dependency setups inside both major workspaces:
+```text
+sanad-app/
+│
+├── backend/            # Express.js server & API routes
+│   ├── models/         # Mongoose schemas (Donation, Story, etc.)
+│   ├── routes/         # Express API endpoints
+│   ├── middleware/     # JWT authentication and guards
+│   └── server.js       # Main server entry point
+│
+├── frontend/           # React.js client application
+│   ├── public/         # Static assets and images
+│   ├── src/            # React components, pages, and context
+│   └── vite.config.js  # Vite bundler configuration
+│
+└── README.md           # Project documentation
+```
+
+---
+
+## 📋 Prerequisites
+
+Before you begin, ensure you have the following installed:
+- [Node.js](https://nodejs.org/en/) (v16.x or higher)
+- [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) account (or a local MongoDB instance)
+- *(Optional)* Stripe API keys if implementing automated credit card gateways
+
+---
+
+## 💻 Installation & Setup
+
+Follow these step-by-step instructions to get the project running locally.
+
+### 1. Clone the Repository
 ```bash
-# Install backend dependencies
+git clone https://github.com/junaidahmeddev/Sanad-Gaza-Relief-Management-System.git
+cd Sanad-Gaza-Relief-Management-System
+```
+
+### 2. Backend Setup
+```bash
+# Navigate to backend
 cd backend
+
+# Install dependencies
 npm install
 
-# Install frontend dependencies
-cd ../frontend
+# Create environment variables file
+cp .env.example .env
+```
+*Edit the `backend/.env` file and insert your MongoDB URI and a secure JWT Secret.*
+
+### 3. Frontend Setup
+```bash
+# Navigate to frontend (from project root)
+cd frontend
+
+# Install dependencies
 npm install
+
+# Create environment variables file (if configuring Vite API URLs)
+cp .env.example .env
 ```
 
-### 2. Configure Environment Variables (`backend/.env`)
-Create a `.env` file inside the `backend/` directory:
-```env
-PORT=5000
-MONGODB_URI=your_mongodb_connection_uri
-JWT_SECRET=your_secure_signing_key
-ADMIN_USERNAME=admin
-ADMIN_PASSWORD=admin_password
-```
-
-### 3. Run Locally
-Start the development servers:
+### 4. Run Locally
+Start the development servers in two separate terminal windows:
 
 **Backend:**
 ```bash
 cd backend
-node server.js
+npm start
 ```
 
 **Frontend:**
@@ -61,3 +119,17 @@ node server.js
 cd frontend
 npm run dev
 ```
+
+---
+
+## 🤝 Contributing
+
+Contributions make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+---

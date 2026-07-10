@@ -18,7 +18,7 @@ const DonationOverview = () => {
 
   const fetchDonations = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/donations', {
+      const response = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/donations`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
         }
@@ -31,7 +31,7 @@ const DonationOverview = () => {
 
   const fetchStats = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/dashboard/stats', {
+      const response = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/dashboard/stats`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
         }

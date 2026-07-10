@@ -70,7 +70,7 @@ import React, { useState, useRef } from "react";
       e.preventDefault();
       
       try {
-        const response = await fetch('http://localhost:5000/api/orphans', {
+        const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/orphans`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

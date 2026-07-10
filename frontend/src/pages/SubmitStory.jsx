@@ -29,7 +29,7 @@ const SubmitStory = () => {
     if (video) storyData.append("video", video);
 
     try {
-      const res = await axios.post("http://localhost:5000/api/stories", storyData, {
+      const res = await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/stories`, storyData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       setSubmitted(true);

@@ -23,7 +23,7 @@ const StoryManagement = () => {
 
   const fetchStories = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/stories');
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/stories`);
       const data = await response.json();
       setStories(Array.isArray(data) ? data : []);
     } catch (error) {
@@ -36,7 +36,7 @@ const StoryManagement = () => {
 
   const handleApprove = async (id) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/stories/${id}/approve`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}`}/api/stories/${id}/approve`, {
         method: 'PATCH',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
@@ -56,7 +56,7 @@ const StoryManagement = () => {
 
   const handleReject = async (id) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/stories/${id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}`}/api/stories/${id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
@@ -84,7 +84,7 @@ const StoryManagement = () => {
     if (formData.video) formDataToSend.append('video', formData.video);
 
     try {
-      const response = await fetch('http://localhost:5000/api/stories', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/stories`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
@@ -232,7 +232,7 @@ const StoryManagement = () => {
                         {story.image && (
                           <div className="relative">
                             <img
-                              src={`http://localhost:5000/uploads/${story.image}`}
+                              src={`${import.meta.env.VITE_API_URL || `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}`}/uploads/${story.image}`}
                               alt="Story"
                               className="w-20 h-20 object-cover rounded-lg"
                             />
@@ -244,7 +244,7 @@ const StoryManagement = () => {
                         {story.video && (
                           <div className="relative">
                             <video className="w-20 h-20 object-cover rounded-lg">
-                              <source src={`http://localhost:5000/uploads/${story.video}`} />
+                              <source src={`${import.meta.env.VITE_API_URL || `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}`}/uploads/${story.video}`} />
                             </video>
                             <div className="absolute inset-0 bg-black bg-opacity-40 rounded-lg flex items-center justify-center">
                               <Video className="w-6 h-6 text-white" />

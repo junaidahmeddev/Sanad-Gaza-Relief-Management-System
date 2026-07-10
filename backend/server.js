@@ -8,25 +8,28 @@ const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(cors({
-  origin: "*", 
+  origin: [
+    "http://localhost:5173", 
+    "https://sanad-gaza-relief-management-system.vercel.app"
+  ], 
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
 app.use(express.json());
 
 // MongoDB Connection
-const mongoUri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/sanad_db';
-const localBackupUri = 'mongodb://127.0.0.1:27017/sanad_db';
+const mongoUri = process.env.MONGODB_URI;
+
+if (!mongoUri) {
+  console.error('ERROR: MONGODB_URI environment variable is missing.');
+  process.exit(1);
+}
 
 mongoose.connect(mongoUri)
   .then(() => console.log('Connected to MongoDB Successfully'))
   .catch(err => {
-    console.error('MongoDB connection error on primary URI, trying local fallback:', err.message);
-    if (mongoUri !== localBackupUri) {
-      mongoose.connect(localBackupUri)
-        .then(() => console.log('Connected to local MongoDB successfully as fallback'))
-        .catch(localErr => console.error('Local MongoDB fallback connection also failed:', localErr.message));
-    }
+    console.error('MongoDB connection error:', err.message);
+    process.exit(1);
   });
 
 // Test Route

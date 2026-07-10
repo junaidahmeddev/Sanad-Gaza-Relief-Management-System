@@ -10,7 +10,7 @@ const AdminStoryPage = () => {
 
   const fetchStories = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/stories");
+      const res = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/stories`);
       setStories(res.data);
     } catch (err) {
       console.error("Error fetching stories:", err);
@@ -19,7 +19,7 @@ const AdminStoryPage = () => {
 
   const approveStory = async (id) => {
     try {
-      await axios.patch(`http://localhost:5000/api/stories/${id}/approve`);
+      await axios.patch(`${import.meta.env.VITE_API_URL || `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}`}/api/stories/${id}/approve`);
       fetchStories(); // Refresh the list
     } catch (err) {
       console.error("Error approving story:", err);
@@ -28,7 +28,7 @@ const AdminStoryPage = () => {
 
   const deleteStory = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/stories/${id}`);
+      await axios.delete(`${import.meta.env.VITE_API_URL || `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}`}/api/stories/${id}`);
       fetchStories();
     } catch (err) {
       console.error("Error deleting story:", err);

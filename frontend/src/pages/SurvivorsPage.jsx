@@ -11,7 +11,7 @@ export default function SurvivorsPage() {
       try {
         setLoading(true);
         // Fetch stories of type 'survivor' from backend
-        const response = await axios.get('http://localhost:5000/api/stories');
+        const response = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/stories`);
         const survivorStories = response.data.filter(story => story.type === 'survivor' && story.approved);
         
         // Transform backend data to match MemoryListPage format
@@ -19,7 +19,7 @@ export default function SurvivorsPage() {
           id: story._id,
           title: story.title,
           description: story.description,
-          mediaUrl: story.image ? `http://localhost:5000/uploads/${story.image}` : 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=600&auto=format&fit=crop&q=60',
+          mediaUrl: story.image ? `${import.meta.env.VITE_API_URL || `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}`}/uploads/${story.image}` : 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=600&auto=format&fit=crop&q=60',
           mediaType: story.image ? 'image' : 'image',
           createdAt: story.createdAt
         }));

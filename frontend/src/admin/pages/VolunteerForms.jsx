@@ -11,7 +11,7 @@ const VolunteerForms = () => {
 
   const fetchVolunteers = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/volunteers', {
+      const response = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/volunteers`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
         }
@@ -26,7 +26,7 @@ const VolunteerForms = () => {
 
   const updateStatus = async (id, status) => {
     try {
-      await axios.put(`http://localhost:5000/api/volunteers/${id}`, { status }, {
+      await axios.put(`${import.meta.env.VITE_API_URL || `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}`}/api/volunteers/${id}`, { status }, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
         }

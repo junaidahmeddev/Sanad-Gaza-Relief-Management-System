@@ -7,7 +7,7 @@ const StoryList = () => {
 useEffect(() => {
   const fetchStories = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/stories');
+      const res = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/stories`);
       console.log('Fetched stories:', res.data);
       setStories(res.data); // make sure this is an array
     } catch (err) {
@@ -22,7 +22,7 @@ useEffect(() => {
 
   const handleApprove = async (id) => {
     try {
-      await axios.patch(`http://localhost:5000/api/stories/${id}/approve`);
+      await axios.patch(`${import.meta.env.VITE_API_URL || `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}`}/api/stories/${id}/approve`);
       setStories((prev) =>
         prev.map((story) =>
           story._id === id ? { ...story, approved: true } : story
@@ -35,7 +35,7 @@ useEffect(() => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/stories/${id}`);
+      await axios.delete(`${import.meta.env.VITE_API_URL || `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}`}/api/stories/${id}`);
       setStories((prev) => prev.filter((story) => story._id !== id));
     } catch (err) {
       console.error('Error deleting story:', err);
@@ -53,7 +53,7 @@ useEffect(() => {
   formData.append("video", video); // input type="file" for video
 
   try {
-    const response = await axios.post("http://localhost:5000/api/stories", formData, {
+    const response = await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/stories`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -75,14 +75,14 @@ useEffect(() => {
           <p>Status: {story.approved ? '✅ Approved' : '⏳ Pending'}</p>
           {story.image && (
             <img
-              src={`http://localhost:5000/uploads/${story.image}`}
+              src={`${import.meta.env.VITE_API_URL || `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}`}/uploads/${story.image}`}
               alt="Story Image"
               className="w-32 mt-2"
             />
           )}
           {story.video && (
             <video controls className="w-64 mt-2">
-              <source src={`http://localhost:5000/uploads/${story.video}`} />
+              <source src={`${import.meta.env.VITE_API_URL || `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}`}/uploads/${story.video}`} />
             </video>
           )}
           <div className="mt-2 space-x-2">

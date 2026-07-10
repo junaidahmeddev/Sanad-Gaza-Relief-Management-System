@@ -12,7 +12,7 @@ const Blacklist = () => {
   }, []);
   const fetchBlacklistEntries = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/blacklist', {
+      const response = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/blacklist`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
         }
@@ -28,7 +28,7 @@ const Blacklist = () => {
   const addEntry = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/api/blacklist', newEntry, {
+      await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/blacklist`, newEntry, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
         }
@@ -44,7 +44,7 @@ const Blacklist = () => {
   const deleteEntry = async (id) => {
     if (window.confirm('Are you sure you want to remove this entry?')) {
       try {
-        await axios.delete(`http://localhost:5000/api/blacklist/${id}`, {
+        await axios.delete(`${import.meta.env.VITE_API_URL || `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}`}/api/blacklist/${id}`, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
           }

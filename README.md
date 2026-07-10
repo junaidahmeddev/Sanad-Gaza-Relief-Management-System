@@ -1,23 +1,25 @@
-# 🌍 Sanad – Gaza Relief Management System 🇵🇸
+<div align="center">
+  
+  # 🌍 Sanad – Gaza Relief Management System 🇵🇸
+  
+  **A premium, full-stack humanitarian relief platform designed to support reconstruction, aid distribution, and support programs in Gaza.**
 
-![License](https://img.shields.io/badge/License-MIT-blue.svg)
-![React](https://img.shields.io/badge/React-20232A?style=flat&logo=react&logoColor=61DAFB)
-![Node.js](https://img.shields.io/badge/Node.js-43853D?style=flat&logo=node.js&logoColor=white)
-![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=flat&logo=mongodb&logoColor=white)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat&logo=tailwind-css&logoColor=white)
+  <br />
 
-[![Live Demo](https://img.shields.io/badge/Live_Demo-View_Deployment-success?style=for-the-badge)](https://your-vercel-deployment-link.vercel.app/)
+  [![Live Demo](https://img.shields.io/badge/🔴_LIVE_DEMO-View_Deployment-success?style=for-the-badge&color=059669)](https://sanad-gaza-relief-management-system.vercel.app/)
 
-**Sanad** is a premium full-stack humanitarian relief platform designed to support reconstruction, aid distribution, and support programs in Gaza. It enables donor transparency, live campaign management, and secure local/international transfer verification.
+  <br />
 
----
+  ![React](https://img.shields.io/badge/React-20232A?style=flat&logo=react&logoColor=61DAFB)
+  ![Node.js](https://img.shields.io/badge/Node.js-43853D?style=flat&logo=node.js&logoColor=white)
+  ![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=flat&logo=mongodb&logoColor=white)
+  ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat&logo=tailwind-css&logoColor=white)
+  ![License](https://img.shields.io/badge/License-MIT-blue.svg)
 
-## 📸 Screenshots
-![Homepage Screenshot](/placeholder-homepage.png)
-*Sanad Gaza Relief Homepage displaying active campaigns and transparent donation tracking.*
-
-![Admin Dashboard](/placeholder-dashboard.png)
-*Admin Dashboard for verifying transfers and reviewing memorial stories.*
+  <br />
+  
+  *Enabling donor transparency, live campaign management, and secure local/international transfer verification.*
+</div>
 
 ---
 
@@ -131,5 +133,3 @@ Contributions make the open-source community such an amazing place to learn, ins
 3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
-
----
